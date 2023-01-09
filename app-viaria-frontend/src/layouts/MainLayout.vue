@@ -23,12 +23,13 @@
     >
       <q-list>
         <q-item-label header> Menu</q-item-label>
-        <q-expansion-item expand-separator icon="filter_alt" label="Filtros">
+        <q-expansion-item expand-separator icon="filter_alt" label="Filtros" default-opened>
           <q-expansion-item
             :header-inset-level="1"
             :content-inset-level="1"
             expand-separator
             label="Cidades/CE"
+            default-opened
           >
             <div class="row q-pa-md">
               <div>
@@ -37,38 +38,18 @@
                   class="selectSize q-mt-sm"
                   dense
                   outlined
-                  v-model="state.cidade"
+                  v-model="drawer.cidade"
                   :options="cidadesOptions"
                 />
               </div>
-              <div v-if="state.cidade === 'Banabuiú'" class="q-mt-sm">
+              <div class="q-mt-sm">
                 <span>CE: </span>
                 <q-select
                   class="selectSize q-mt-sm"
                   dense
                   outlined
-                  v-model="drawer.ceBanabuiu"
-                  :options="ceBanabuiuOptions"
-                />
-              </div>
-              <div v-if="state.cidade === 'Quixadá'" class="q-mt-sm">
-                <span>CE: </span>
-                <q-select
-                  class="selectSize q-mt-sm"
-                  dense
-                  outlined
-                  v-model="drawer.ceQuixada"
-                  :options="ceQuixadaOptions"
-                />
-              </div>
-              <div v-if="state.cidade === 'Fortaleza'" class="q-mt-sm">
-                <span>CE: </span>
-                <q-select
-                  class="selectSize q-mt-sm"
-                  dense
-                  outlined
-                  v-model="drawer.ceFortaleza"
-                  :options="ceFortalezaOptions"
+                  v-model="drawer.rodovia"
+                  :options="drawer.cidade !== 'Selecione' ? options[drawer.cidade] : ceOptions"
                 />
               </div>
             </div>
@@ -78,6 +59,7 @@
             label="Defeitos"
             :header-inset-level="1"
             :content-inset-level="1"
+            default-opened
           >
             <div class="row q-pa-md">
               <span>Defeitos: </span>
@@ -85,12 +67,12 @@
                 class="selectSize q-mt-sm"
                 dense
                 outlined
-                v-model="state.defeitos"
+                v-model="drawer.defeito"
                 :options="defeitosOptions"
               />
-              <q-btn color="primary" push no-caps class="q-mt-sm">
-                Buscar
-              </q-btn>
+              <q-banner v-if="drawer.nenhumFiltroSelecionado" inline-actions dense rounded class="bg-orange q-mt-lg text-bold text-white">
+                Selecione pelo menos um filtro!
+              </q-banner>
             </div>
           </q-expansion-item>
         </q-expansion-item>
@@ -99,6 +81,7 @@
           icon="location_on"
           label="Informações"
           caption="Informações sobre o marcador"
+          default-opened
         >
           <galeria></galeria>
         </q-expansion-item>
@@ -127,24 +110,25 @@ export default defineComponent({
       defeitos: null,
       cidade: null,
     });
-    const cidadesOptions = ["Banabuiú", "Quixadá", "Fortaleza"];
+    const cidadesOptions = ["Selecione", "Aquiraz, CE", "Fortaleza, CE", "Graça, CE", "Ubajara, CE"];
 
-    const defeitosOptions = ["Crack", "Patch"];
+    const defeitosOptions = ["Selecione", "Rachadura", "Remendo", "Panela"];
 
-    const ceBanabuiuOptions = ["CE-368", "CE-266"];
-
-    const ceQuixadaOptions = ["CE-060", "CE-265"];
-
-    const ceFortalezaOptions = ["CE-025", "CE-040"];
+    const ceOptions = ["Selecione", "CE - 025", "CE - 040", "CE - 060", "CE - 187", "CE - 317", "CE - 321"]
+    const options = {
+      "Aquiraz, CE": ["Selecione", "CE - 025", "CE - 040"],
+      "Fortaleza, CE": ["Selecione", "CE - 025", "CE - 040", "CE - 060"],
+      "Graça, CE": ["Selecione", "CE - 321"],
+      "Ubajara, CE": ["Selecione", "CE - 317", "CE - 187"]
+    }
 
     return {
       drawer,
       state,
       cidadesOptions,
       defeitosOptions,
-      ceBanabuiuOptions,
-      ceQuixadaOptions,
-      ceFortalezaOptions,
+      options,
+      ceOptions
     };
   },
 });
