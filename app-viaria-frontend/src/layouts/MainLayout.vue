@@ -85,10 +85,16 @@
                 class="selectSize q-mt-sm"
                 dense
                 outlined
-                v-model="state.defeitos"
+                v-model="drawer.modelDefeitos"
                 :options="defeitosOptions"
               />
-              <q-btn color="primary" push no-caps class="q-mt-sm">
+              <q-btn
+                color="primary"
+                push
+                no-caps
+                class="q-mt-sm"
+                @click="goToDefeitos"
+              >
                 Buscar
               </q-btn>
             </div>
@@ -114,6 +120,7 @@
 import { defineComponent, reactive } from "vue";
 import galeria from "../components/galeria.vue";
 import { useComponentStore } from "../stores/component-store";
+import { useRouter } from "vue-router";
 
 const drawer = useComponentStore();
 
@@ -124,9 +131,10 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      defeitos: null,
       cidade: null,
     });
+
+    const router = useRouter();
     const cidadesOptions = ["Banabuiú", "Quixadá", "Fortaleza"];
 
     const defeitosOptions = ["Crack", "Patch"];
@@ -137,6 +145,10 @@ export default defineComponent({
 
     const ceFortalezaOptions = ["CE-025", "CE-040"];
 
+    function goToDefeitos() {
+      drawer.filtrarPorClasse();
+      router.push("/tabela");
+    }
     return {
       drawer,
       state,
@@ -145,6 +157,7 @@ export default defineComponent({
       ceBanabuiuOptions,
       ceQuixadaOptions,
       ceFortalezaOptions,
+      goToDefeitos,
     };
   },
 });
