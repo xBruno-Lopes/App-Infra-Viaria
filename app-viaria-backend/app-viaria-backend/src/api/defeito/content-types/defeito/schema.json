@@ -4,7 +4,8 @@
   "info": {
     "singularName": "defeito",
     "pluralName": "defeitos",
-    "displayName": "Defeito"
+    "displayName": "Defeito",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -23,24 +24,29 @@
     "classe": {
       "type": "enumeration",
       "enum": [
-        "sem-defeitos",
+        "no_defect",
         "pothole",
         "crack",
-        "patch"
+        "patche"
       ]
     },
     "dataDeColeta": {
       "type": "datetime"
     },
     "imagem": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
+    },
+    "cidade": {
+      "type": "string",
+      "required": true
     }
   }
 }
