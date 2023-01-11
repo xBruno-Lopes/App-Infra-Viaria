@@ -10,6 +10,9 @@ export default {
   findOne(id) {
     return Request.get(`${resource}/${id}?populate=imagem`);
   },
+  findByClasse(classe) {
+    return Request.get(`${resource}?filters[classe][$eq]=${classe}`);
+  },
 
   findByCidadeAndRodovia(filters) {
     let cidade = filters.cidade;
@@ -26,7 +29,7 @@ export default {
     else if (defeito === "Panela") defeito = "pothole";
 
     return Request.get(
-      `${resource}?filters[$and][0][cidade][$contains]=${cidade}&filters[$and][1][endereco][$contains]=${rodovia}&}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`
+      `${resource}?filters[$and][0][cidade][$contains]=${cidade}&filters[$and][1][endereco][$contains]=${rodovia}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`
     );
   },
 };

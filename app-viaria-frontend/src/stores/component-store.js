@@ -11,9 +11,11 @@ export const useComponentStore = defineStore("main", {
     markerImg: null,
     leftDrawerOpen: false,
     makerLocalizacao: null,
-    ceBanabuiu: "",
-    ceQuixada: "",
-    ceFortaleza: "",
+    cidade: "Fortaleza, CE",
+    defeito: "Selecione",
+    rodovia: "Selecione",
+    nenhumFiltroSelecionado: false,
+    contentTable: new Set(),
   }),
   actions: {
     fecthMarkerData(classe, date, endereco, img, localizacao) {
@@ -59,6 +61,16 @@ export const useComponentStore = defineStore("main", {
     },
     getDefeito(state) {
       return state.defeito;
+    },
+    getNenhumFiltro(state) {
+      return state.nenhumFiltroSelecionado;
+    },
+    getContentTable(state) {
+      const data = [...state.contentTable].map((item) => {
+        if (typeof item === "string") return JSON.parse(item);
+        else if (typeof item === "object") return item;
+      });
+      return data;
     },
   },
 });

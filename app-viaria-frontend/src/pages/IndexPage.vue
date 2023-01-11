@@ -1,6 +1,5 @@
 <template>
-  <div ref="mapDiv" style="width: 100%; height: 92vh">
-  </div>
+  <div ref="mapDiv" style="width: 100%; height: 92vh"></div>
 </template>
 
 <script>
@@ -23,15 +22,18 @@ export default {
     let filters = ref({
       cidade: "Fortaleza, CE",
       rodovia: "CE - 040",
-      defeito: "Rachadura"
-    })
+      defeito: "Rachadura",
+    });
 
     let myWayPoints = [];
     let markers = [];
 
     async function fecthData(filters) {
-
-      if(filters.cidade !== "Selecione" || filters.rodovia !== "Selecione" || filters.defeito !== "Selecione"){
+      if (
+        filters.cidade !== "Selecione" ||
+        filters.rodovia !== "Selecione" ||
+        filters.defeito !== "Selecione"
+      ) {
         dataStore.nenhumFiltroSelecionado = false;
         await defeitosRequest.findByCidadeAndRodovia(filters).then((res) => {
           const data = res.data.data;
@@ -46,7 +48,7 @@ export default {
             };
           });
         });
-        myWayPoints = []
+        myWayPoints = [];
         await defeitos.value.map((element) => {
           if (element.classe !== "no_defect") {
             myWayPoints.push({
@@ -63,8 +65,8 @@ export default {
           }
         });
       } else {
-        clearMarks()
-        myWayPoints = []
+        clearMarks();
+        myWayPoints = [];
         dataStore.nenhumFiltroSelecionado = true;
         dataStore.markerClasse = null;
       }
@@ -118,163 +120,117 @@ export default {
         labelOrigin: labelOriginFilled,
       };
 
-      await fecthData({cidade: cidade, rodovia: endereco, defeito: defeito})
-      let index = Math.floor(myWayPoints.length/2)
-      console.log(index)
-      let center 
-      if(myWayPoints.length !== 0){
-        center = myWayPoints[index].location
+      await fecthData({ cidade: cidade, rodovia: endereco, defeito: defeito });
+      let index = Math.floor(myWayPoints.length / 2);
+      let center;
+      if (myWayPoints.length !== 0) {
+        center = myWayPoints[index].location;
 
         map.value.setCenter(new google.maps.LatLng(center));
       }
 
       myWayPoints.forEach((element) => {
-       
-          let icon = element.classe === "patche" ? markerImageYellow : element.classe === "crack" ? markerImageOrange : markerImageRed
-        
-          let marker = new google.maps.Marker({
-            position: element.location,
-            map: mapa,
-            draggable: false,
-            icon: icon,
-          });
+        let icon =
+          element.classe === "patche"
+            ? markerImageYellow
+            : element.classe === "crack"
+            ? markerImageOrange
+            : markerImageRed;
 
-          marker.addListener("click", () => {
-            dataStore.markerDrawerControl();
-            dataStore.fecthMarkerData(
-              element.classe,
-              element.dataDeColeta,
-              element.endereco,
-              element.image,
-              element.location
-            );
-          });
-        
-          markers.push(marker)
+        let marker = new google.maps.Marker({
+          position: element.location,
+          map: mapa,
+          draggable: false,
+          icon: icon,
+        });
+
+        marker.addListener("click", () => {
+          dataStore.markerDrawerControl();
+          dataStore.fecthMarkerData(
+            element.classe,
+            element.dataDeColeta,
+            element.endereco,
+            element.image,
+            element.location
+          );
+        });
+
+        markers.push(marker);
       });
     }
 
     function clearMarks() {
-        markers.forEach(m => {
-          m.setMap(null)
-        })
-        markers = []
+      markers.forEach((m) => {
+        m.setMap(null);
+      });
+      markers = [];
     }
 
     function iniMap() {
       map.value = new google.maps.Map(mapDiv.value, {
         center: {
           lat: -3.7673816666,
-          lng: -38.482243333
+          lng: -38.482243333,
         },
         zoom: 14,
       });
 
-      // const directionRenderer = new google.maps.DirectionsRenderer({
-      //   draggable: false,
-      //   suppressMarkers: true,
-      // });
-
-      // const directionService = new google.maps.DirectionsService();
-
-      // directionRenderer.setMap(map.value);
-      // directionService
-      //   .route({
-      //     origin: {
-      //       lat: -3.8987483333333333,
-      //       lng: -38.402195,
-      //     },
-      //     destination: {
-      //       lat: -3.8987483333333333,
-      //       lng: -38.402195,
-      //     },
-      //     travelMode: google.maps.TravelMode.DRIVING,
-      //   })
-      //   .then((response) => {
-      //     directionRenderer.setDirections(response);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-
-      
-
       watch(
         () => dataStore.getCidade,
         () => {
-          clearMarks()
-          dataStore.rodovia = "Selecione"
-          dataStore.defeito = "Selecione"
+          clearMarks();
+          dataStore.rodovia = "Selecione";
+          dataStore.defeito = "Selecione";
           putMarker(
             dataStore.cidade,
             dataStore.rodovia,
             dataStore.defeito,
-            map.value,
-          )
+            map.value
+          );
         }
       );
 
       watch(
         () => dataStore.getRodovia,
         () => {
-          clearMarks()
+          clearMarks();
           putMarker(
             dataStore.cidade,
             dataStore.rodovia,
             dataStore.defeito,
-            map.value,
-          )
+            map.value
+          );
         }
-        // () => {
-        //   if (dataStore.getCEFor === "CE - 025") {
-        //     putMarker(
-        //       dataStore.ceFortaleza,
-        //       map.value,
-        //       markerImageYellow,
-        //       markerImageBlue,
-        //       {lat: defeitos.value[0].lat, lng: defeitos.value[0].long}
-        //     );
-        //   } else {
-        //     putMarker(
-        //       dataStore.ceFortaleza,
-        //       map.value,
-        //       markerImageYellow,
-        //       markerImageBlue,
-        //       {lat: defeitos.value[0].lat, lng: defeitos.value[0].long}
-        //     );
-        //   }
-        // }
       );
 
       watch(
         () => dataStore.getDefeito,
         () => {
-          clearMarks()
+          clearMarks();
           putMarker(
             dataStore.cidade,
             dataStore.rodovia,
             dataStore.defeito,
 
-            map.value,
-          )
+            map.value
+          );
         }
       );
     }
 
     onMounted(async () => {
-    
       await loader.load();
       await fecthData(filters.value);
       iniMap();
       putMarker(
-            dataStore.cidade,
-            dataStore.rodovia,
-            dataStore.defeito,
-            map.value,
-          )
+        dataStore.cidade,
+        dataStore.rodovia,
+        dataStore.defeito,
+        map.value
+      );
     });
 
-    return { mapDiv, clearMarks};
+    return { mapDiv, clearMarks };
   },
 };
 </script>
