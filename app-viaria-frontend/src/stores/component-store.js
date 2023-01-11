@@ -1,4 +1,7 @@
 import { defineStore } from "pinia";
+import { RequestFactory } from "src/requests/RequestFactory";
+
+const defeitosRequest = RequestFactory.get("defeitos");
 
 export const useComponentStore = defineStore("main", {
   state: () => ({
@@ -11,7 +14,8 @@ export const useComponentStore = defineStore("main", {
     estado: "CE",
     defeito: "Selecione",
     rodovia: "Selecione",
-    nenhumFiltroSelecionado: false
+    nenhumFiltroSelecionado: false,
+    contentTable: new Set(),
   }),
   actions: {
     fecthMarkerData(classe, date, endereco, img, localizacao) {
@@ -31,6 +35,22 @@ export const useComponentStore = defineStore("main", {
         this.leftDrawerOpen = true;
       }
     },
+    filtrarPorClasse() {
+      this.contentTable.clear();
+      defeitosRequest
+        .findByClasse(this.modelDefeitos.toLowerCase())
+        .then((res) => {
+          res.data.data.map((elem) => {
+            this.contentTable.add(
+              JSON.stringify({
+                endereco: elem.attributes.endereco,
+                defeitos: elem.attributes.classe,
+                quantidade: 25,
+              })
+            );
+          });
+        });
+    },
   },
   getters: {
     getRodovia(state) {
@@ -41,6 +61,13 @@ export const useComponentStore = defineStore("main", {
     },
     getNenhumFiltro(state) {
       return state.nenhumFiltroSelecionado;
-    }
+    },
+    getContentTable(state) {
+      const data = [...state.contentTable].map((item) => {
+        if (typeof item === "string") return JSON.parse(item);
+        else if (typeof item === "object") return item;
+      });
+      return data;
+    },
   },
 });

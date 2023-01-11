@@ -23,7 +23,12 @@
     >
       <q-list>
         <q-item-label header> Menu</q-item-label>
-        <q-expansion-item expand-separator icon="filter_alt" label="Filtros" default-opened>
+        <q-expansion-item
+          expand-separator
+          icon="filter_alt"
+          label="Filtros"
+          default-opened
+        >
           <q-expansion-item
             :header-inset-level="1"
             :content-inset-level="1"
@@ -50,7 +55,15 @@
                   dense
                   outlined
                   v-model="drawer.rodovia"
+<<<<<<< HEAD
                   :options="ceOptions"
+=======
+                  :options="
+                    drawer.cidade !== 'Selecione'
+                      ? options[drawer.cidade]
+                      : ceOptions
+                  "
+>>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
                 />
               </div>
             </div>
@@ -71,7 +84,13 @@
                 v-model="drawer.defeito"
                 :options="defeitosOptions"
               />
-              <q-banner v-if="drawer.nenhumFiltroSelecionado" inline-actions dense rounded class="bg-orange q-mt-lg text-bold text-white">
+              <q-banner
+                v-if="drawer.nenhumFiltroSelecionado"
+                inline-actions
+                dense
+                rounded
+                class="bg-orange q-mt-lg text-bold text-white"
+              >
                 Selecione pelo menos um filtro!
               </q-banner>
             </div>
@@ -108,20 +127,37 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      defeitos: null,
       cidade: null,
     });
+<<<<<<< HEAD
     const estadosOptions = ["CE"];
+=======
+    const cidadesOptions = [
+      "Selecione",
+      "Aquiraz, CE",
+      "Fortaleza, CE",
+      "Graça, CE",
+      "Ubajara, CE",
+    ];
+>>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
 
     const defeitosOptions = ["Selecione", "Rachadura", "Remendo", "Panela"];
 
-    const ceOptions = ["Selecione", "CE - 025", "CE - 040", "CE - 060", "CE - 187", "CE - 317", "CE - 321"]
+    const ceOptions = [
+      "Selecione",
+      "CE - 025",
+      "CE - 040",
+      "CE - 060",
+      "CE - 187",
+      "CE - 317",
+      "CE - 321",
+    ];
     const options = {
       "Aquiraz, CE": ["Selecione", "CE - 025", "CE - 040"],
       "Fortaleza, CE": ["Selecione", "CE - 025", "CE - 040", "CE - 060"],
       "Graça, CE": ["Selecione", "CE - 321"],
-      "Ubajara, CE": ["Selecione", "CE - 317", "CE - 187"]
-    }
+      "Ubajara, CE": ["Selecione", "CE - 317", "CE - 187"],
+    };
 
     return {
       drawer,
@@ -129,7 +165,7 @@ export default defineComponent({
       estadosOptions,
       defeitosOptions,
       options,
-      ceOptions
+      ceOptions,
     };
   },
 });
