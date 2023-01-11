@@ -10,13 +10,14 @@ import { useComponentStore } from "../stores/component-store";
 import { RequestFactory } from "src/requests/RequestFactory";
 
 const defeitosRequest = RequestFactory.get("defeitos");
-const G_API_KEY = "AIzaSyB-cZpKsO8sWCfu0_KUiFrG8brl-RfxRqQ";
 const dataStore = useComponentStore();
 
 export default {
   name: "App",
   setup() {
-    const loader = new Loader({ apiKey: G_API_KEY });
+    const G_API_KEY = process.env.G_API_KEY;
+    console.log(G_API_KEY)
+    const loader = new Loader({ apiKey: G_API_KEY, libraries: ["places","visualization"]});
     const mapDiv = ref(null);
     let map = ref(null);
     let defeitos = ref(null);
@@ -31,7 +32,7 @@ export default {
 
     async function fecthData(filters) {
 
-      if(filters.cidade !== "Selecione" || filters.rodovia !== "Selecione" || filters.defeito !== "Selecione"){
+      if(filters.rodovia !== "Selecione" || filters.defeito !== "Selecione"){
         dataStore.nenhumFiltroSelecionado = false;
         await defeitosRequest.findByCidadeAndRodovia(filters).then((res) => {
           const data = res.data.data;
@@ -70,7 +71,7 @@ export default {
       }
     }
 
-    async function putMarker(cidade, endereco, defeito, mapa) {
+    async function putMarker(endereco, defeito, mapa) {
       // map.value.setCenter(new google.maps.LatLng(center.lat, center.lng));
 
       var pinColorYellow = "#FFFF00";
@@ -118,7 +119,7 @@ export default {
         labelOrigin: labelOriginFilled,
       };
 
-      await fecthData({cidade: cidade, rodovia: endereco, defeito: defeito})
+      await fecthData({ rodovia: endereco, defeito: defeito})
       let index = Math.floor(myWayPoints.length/2)
       console.log(index)
       let center 
@@ -164,10 +165,10 @@ export default {
     function iniMap() {
       map.value = new google.maps.Map(mapDiv.value, {
         center: {
-          lat: -3.7673816666,
-          lng: -38.482243333
+          lat: -5.181303,
+          lng: -39.581477
         },
-        zoom: 14,
+        zoom: 8,
       });
 
       // const directionRenderer = new google.maps.DirectionsRenderer({
@@ -206,7 +207,6 @@ export default {
           dataStore.rodovia = "Selecione"
           dataStore.defeito = "Selecione"
           putMarker(
-            dataStore.cidade,
             dataStore.rodovia,
             dataStore.defeito,
             map.value,
@@ -219,7 +219,6 @@ export default {
         () => {
           clearMarks()
           putMarker(
-            dataStore.cidade,
             dataStore.rodovia,
             dataStore.defeito,
             map.value,
@@ -251,7 +250,6 @@ export default {
         () => {
           clearMarks()
           putMarker(
-            dataStore.cidade,
             dataStore.rodovia,
             dataStore.defeito,
 
@@ -267,7 +265,6 @@ export default {
       await fecthData(filters.value);
       iniMap();
       putMarker(
-            dataStore.cidade,
             dataStore.rodovia,
             dataStore.defeito,
             map.value,

@@ -12,12 +12,8 @@ export default {
   },
 
   findByCidadeAndRodovia(filters){
-    let cidade = filters.cidade;
     let rodovia = filters.rodovia;
     let defeito = filters.defeito;
-
-    if(cidade === "Selecione")
-      cidade = ""
 
     if(rodovia === "Selecione")
       rodovia = ""
@@ -31,6 +27,6 @@ export default {
     else if(defeito === "Panela")
       defeito = "pothole"
 
-    return Request.get(`${resource}?filters[$and][0][cidade][$contains]=${cidade}&filters[$and][1][endereco][$contains]=${rodovia}&}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`);
+    return Request.get(`${resource}?filters[$and][1][endereco][$contains]=${rodovia}&}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`);
   }
 };

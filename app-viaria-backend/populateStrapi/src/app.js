@@ -31,14 +31,6 @@ function convertCodEndereco(cod) {
     return estado + ' - ' + num;
   }
   
-async function getCity(lat, long){
-    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=pt-br`,{
-    	method: 'get'
-    })
-    
-    const data = await response.json()
-    return data.city + ", " + data.principalSubdivisionCode.split("-")[1]
-}
 
 /*
 const classeDeDefeitos = [
@@ -55,25 +47,21 @@ async function populate() {
     const records = parse(fileContent, {columns: true});
     for (let record of records) {
         const classe = record.classe
-        const codEndereco = convertCodEndereco(record.cod_endereco)
+        const endereco = convertCodEndereco(record.cod_endereco)
         const latitude = parseDMS(record.lat_geodesica)
         const longitude = parseDMS(record.long_geodesica)
-        const dataColeta = record.data
-        const cidade = await getCity(latitude, longitude)
-
+        const dataDeColeta = record.data
 
         const coverPath = path.join(__dirname, `./${record.imagem}`)
 
         const json = JSON.stringify({
-            endereco: codEndereco,
+            endereco,
             latitude,
             longitude,
-            cidade,
             classe,
-            dataDeColeta:dataColeta
+            dataDeColeta
         })
-
-        //console.log(json)
+        
          const form = new FormData();
 
          form.append('data', json)

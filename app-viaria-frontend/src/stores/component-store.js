@@ -8,7 +8,7 @@ export const useComponentStore = defineStore("main", {
     markerImg: null,
     leftDrawerOpen: false,
     markerLocalizacao: null,
-    cidade: "Fortaleza, CE",
+    estado: "CE",
     defeito: "Selecione",
     rodovia: "Selecione",
     nenhumFiltroSelecionado: false
@@ -35,9 +35,6 @@ export const useComponentStore = defineStore("main", {
   getters: {
     getRodovia(state) {
       return state.rodovia;
-    },
-    getCidade(state) {
-      return state.cidade;
     },
     getDefeito(state) {
       return state.defeito;

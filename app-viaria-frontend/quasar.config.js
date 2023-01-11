@@ -10,6 +10,7 @@
 
 
 const { configure } = require('quasar/wrappers');
+require('dotenv').config()
 
 
 module.exports = configure(function (/* ctx */) {
@@ -60,7 +61,10 @@ module.exports = configure(function (/* ctx */) {
         node: 'node16'
       },
 
+      
       vueRouterMode: 'history', // available values: 'hash', 'history'
+
+      env: require('dotenv').config().parsed
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
