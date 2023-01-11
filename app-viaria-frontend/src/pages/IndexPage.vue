@@ -30,16 +30,8 @@ export default {
     let markers = [];
 
     async function fecthData(filters) {
-<<<<<<< HEAD
 
       if(filters.rodovia !== "Selecione" || filters.defeito !== "Selecione"){
-=======
-      if (
-        filters.cidade !== "Selecione" ||
-        filters.rodovia !== "Selecione" ||
-        filters.defeito !== "Selecione"
-      ) {
->>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
         dataStore.nenhumFiltroSelecionado = false;
         await defeitosRequest.findByCidadeAndRodovia(filters).then((res) => {
           const data = res.data.data;
@@ -126,20 +118,12 @@ export default {
         labelOrigin: labelOriginFilled,
       };
 
-<<<<<<< HEAD
       await fecthData({ rodovia: endereco, defeito: defeito})
       let index = Math.floor(myWayPoints.length/2)
       console.log(index)
       let center 
       if(myWayPoints.length !== 0){
         center = myWayPoints[index].location
-=======
-      await fecthData({ cidade: cidade, rodovia: endereco, defeito: defeito });
-      let index = Math.floor(myWayPoints.length / 2);
-      let center;
-      if (myWayPoints.length !== 0) {
-        center = myWayPoints[index].location;
->>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
 
         map.value.setCenter(new google.maps.LatLng(center));
       }
@@ -184,13 +168,8 @@ export default {
     function iniMap() {
       map.value = new google.maps.Map(mapDiv.value, {
         center: {
-<<<<<<< HEAD
           lat: -5.181303,
           lng: -39.581477
-=======
-          lat: -3.7673816666,
-          lng: -38.482243333,
->>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
         },
         zoom: 8,
       });
@@ -240,18 +219,10 @@ export default {
       await fecthData(filters.value);
       iniMap();
       putMarker(
-<<<<<<< HEAD
             dataStore.rodovia,
             dataStore.defeito,
             map.value,
           )
-=======
-        dataStore.cidade,
-        dataStore.rodovia,
-        dataStore.defeito,
-        map.value
-      );
->>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
     });
 
     return { mapDiv, clearMarks };

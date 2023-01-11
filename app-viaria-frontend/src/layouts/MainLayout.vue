@@ -55,15 +55,7 @@
                   dense
                   outlined
                   v-model="drawer.rodovia"
-<<<<<<< HEAD
                   :options="ceOptions"
-=======
-                  :options="
-                    drawer.cidade !== 'Selecione'
-                      ? options[drawer.cidade]
-                      : ceOptions
-                  "
->>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
                 />
               </div>
             </div>
@@ -129,17 +121,7 @@ export default defineComponent({
     const state = reactive({
       cidade: null,
     });
-<<<<<<< HEAD
     const estadosOptions = ["CE"];
-=======
-    const cidadesOptions = [
-      "Selecione",
-      "Aquiraz, CE",
-      "Fortaleza, CE",
-      "Graça, CE",
-      "Ubajara, CE",
-    ];
->>>>>>> 2398c595643a9bd557a754f5ebd7a6bddc5d2252
 
     const defeitosOptions = ["Selecione", "Rachadura", "Remendo", "Panela"];
 
