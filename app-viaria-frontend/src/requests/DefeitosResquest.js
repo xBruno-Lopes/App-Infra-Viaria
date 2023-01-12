@@ -14,22 +14,18 @@ export default {
     return Request.get(`${resource}?filters[classe][$eq]=${classe}`);
   },
 
-  findByCidadeAndRodovia(filters) {
-    let cidade = filters.cidade;
+  findByCidadeAndRodovia(filters){
     let rodovia = filters.rodovia;
     let defeito = filters.defeito;
 
-    if (cidade === "Selecione") cidade = "";
-
-    if (rodovia === "Selecione") rodovia = "";
+    if(rodovia === "Selecione")
+      rodovia = ""
 
     if (defeito === "Selecione") defeito = "";
     else if (defeito === "Rachadura") defeito = "crack";
     else if (defeito === "Remendo") defeito = "patche";
     else if (defeito === "Panela") defeito = "pothole";
 
-    return Request.get(
-      `${resource}?filters[$and][0][cidade][$contains]=${cidade}&filters[$and][1][endereco][$contains]=${rodovia}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`
-    );
-  },
+    return Request.get(`${resource}?filters[$and][1][endereco][$contains]=${rodovia}&}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`);
+  }
 };

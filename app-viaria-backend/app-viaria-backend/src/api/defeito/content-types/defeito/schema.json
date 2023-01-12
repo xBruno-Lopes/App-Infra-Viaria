@@ -43,10 +43,6 @@
         "videos",
         "audios"
       ]
-    },
-    "cidade": {
-      "type": "string",
-      "required": true
     }
   }
 }

@@ -33,32 +33,29 @@
             :header-inset-level="1"
             :content-inset-level="1"
             expand-separator
-            label="Cidades/CE"
+            label="Filtros de localização"
             default-opened
           >
             <div class="row q-pa-md">
-              <div>
-                <span>Cidade: </span>
+              <div class="q-mt-sm">
+                <span>Estado: </span>
                 <q-select
                   class="selectSize q-mt-sm"
                   dense
                   outlined
-                  v-model="drawer.cidade"
-                  :options="cidadesOptions"
+                  v-model="drawer.estado"
+                  :options="estadosOptions"
                 />
               </div>
+
               <div class="q-mt-sm">
-                <span>CE: </span>
+                <span>Rodovia: </span>
                 <q-select
                   class="selectSize q-mt-sm"
                   dense
                   outlined
                   v-model="drawer.rodovia"
-                  :options="
-                    drawer.cidade !== 'Selecione'
-                      ? options[drawer.cidade]
-                      : ceOptions
-                  "
+                  :options="ceOptions"
                 />
               </div>
             </div>
@@ -124,13 +121,7 @@ export default defineComponent({
     const state = reactive({
       cidade: null,
     });
-    const cidadesOptions = [
-      "Selecione",
-      "Aquiraz, CE",
-      "Fortaleza, CE",
-      "Graça, CE",
-      "Ubajara, CE",
-    ];
+    const estadosOptions = ["CE"];
 
     const defeitosOptions = ["Selecione", "Rachadura", "Remendo", "Panela"];
 
@@ -153,7 +144,7 @@ export default defineComponent({
     return {
       drawer,
       state,
-      cidadesOptions,
+      estadosOptions,
       defeitosOptions,
       options,
       ceOptions,
