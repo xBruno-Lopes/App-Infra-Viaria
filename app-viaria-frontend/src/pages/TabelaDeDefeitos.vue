@@ -1,7 +1,24 @@
 <template>
   <q-page padding>
+    <div class="row">
+      <div>
+        <span>Cidade: </span>
+        <q-select
+          class="selectSize q-mt-sm"
+          dense
+          outlined
+          v-model="defeito"
+          :options="defeitosOptions"
+        >
+        </q-select>
+        <div>
+          <q-btn class="q-mt-sm"> Buscar </q-btn>
+        </div>
+      </div>
+    </div>
     <div>
       <q-table
+        class="q-mt-sm"
         :rows="store.getContentTable"
         :columns="tableColumContent"
         title="Tabela de Defeitos"
@@ -26,12 +43,14 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useComponentStore } from "../stores/component-store";
 const store = useComponentStore();
 
 export default defineComponent({
   setup() {
+    const defeitosOptions = ["Rachadura", "Remendo", "Panela"];
+    const defeito = ref(null);
     const tableColumContent = [
       {
         name: "endereco",
@@ -63,10 +82,22 @@ export default defineComponent({
         sortable: false,
       },
     ];
+    function buscarCEporDefeitos() {
+      store.filtrarPorClasse();
+    }
     return {
       tableColumContent,
       store,
+      defeitosOptions,
+      defeito,
+      buscarCEporDefeitos,
     };
   },
 });
 </script>
+
+<style scoped>
+.selectSize {
+  width: 220px;
+}
+</style>
