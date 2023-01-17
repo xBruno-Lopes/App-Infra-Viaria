@@ -16,6 +16,7 @@ export const useComponentStore = defineStore("main", {
     rodovia: "Selecione",
     nenhumFiltroSelecionado: false,
     contentTable: new Set(),
+    dados: { endereco: "CE - 025", defeito: "pothole" },
   }),
   actions: {
     fecthMarkerData(classe, date, endereco, img, localizacao) {
@@ -28,6 +29,9 @@ export const useComponentStore = defineStore("main", {
     markerDrawerControl() {
       if (this.leftDrawerOpen === false) this.leftDrawerOpen = true;
     },
+    tabDrawerControl() {
+      if (this.leftDrawerOpen === true) this.leftDrawerOpen = false;
+    },
     ToolbarDrawerControl() {
       if (this.leftDrawerOpen) {
         this.leftDrawerOpen = false;
@@ -35,21 +39,19 @@ export const useComponentStore = defineStore("main", {
         this.leftDrawerOpen = true;
       }
     },
-    filtrarPorClasse() {
+    filtrarPorClasse(classe) {
       this.contentTable.clear();
-      defeitosRequest
-        .findByClasse(this.modelDefeitos.toLowerCase())
-        .then((res) => {
-          res.data.data.map((elem) => {
-            this.contentTable.add(
-              JSON.stringify({
-                endereco: elem.attributes.endereco,
-                defeitos: elem.attributes.classe,
-                quantidade: 25,
-              })
-            );
-          });
+      defeitosRequest.findByClasse(classe).then((res) => {
+        res.data.data.map((elem) => {
+          this.contentTable.add(
+            JSON.stringify({
+              endereco: elem.attributes.endereco,
+              defeitos: elem.attributes.classe,
+              quantidade: 25,
+            })
+          );
         });
+      });
     },
   },
   getters: {

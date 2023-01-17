@@ -15,23 +15,24 @@ export default {
   name: "App",
   setup() {
     const G_API_KEY = process.env.G_API_KEY;
-    console.log(G_API_KEY)
-    const loader = new Loader({ apiKey: G_API_KEY, libraries: ["places","visualization"]});
+    const loader = new Loader({
+      apiKey: G_API_KEY,
+      libraries: ["places", "visualization"],
+    });
     const mapDiv = ref(null);
     let map = ref(null);
     let defeitos = ref(null);
-    let filters = ref({
-      cidade: "Fortaleza, CE",
-      rodovia: "CE - 040",
-      defeito: "Rachadura",
-    });
+    // let filters = ref({
+    //   cidade: "Fortaleza, CE",
+    //   rodovia: "CE - 040",
+    //   defeito: "Rachadura",
+    // });
 
     let myWayPoints = [];
     let markers = [];
 
     async function fecthData(filters) {
-
-      if(filters.rodovia !== "Selecione" || filters.defeito !== "Selecione"){
+      if (filters.rodovia !== "Selecione" || filters.defeito !== "Selecione") {
         dataStore.nenhumFiltroSelecionado = false;
         await defeitosRequest.findByCidadeAndRodovia(filters).then((res) => {
           const data = res.data.data;
@@ -118,14 +119,14 @@ export default {
         labelOrigin: labelOriginFilled,
       };
 
-      await fecthData({ rodovia: endereco, defeito: defeito})
-      let index = Math.floor(myWayPoints.length/2)
-      console.log(index)
-      let center 
-      if(myWayPoints.length !== 0){
-        center = myWayPoints[index].location
+      await fecthData({ rodovia: endereco, defeito: defeito });
+      let index = Math.floor(myWayPoints.length / 2);
+      let center;
+      if (myWayPoints.length !== 0) {
+        center = myWayPoints[index].location;
 
         map.value.setCenter(new google.maps.LatLng(center));
+        map.value.setZoom(13);
       }
 
       myWayPoints.forEach((element) => {
@@ -169,9 +170,9 @@ export default {
       map.value = new google.maps.Map(mapDiv.value, {
         center: {
           lat: -5.181303,
-          lng: -39.581477
+          lng: -39.581477,
         },
-        zoom: 8,
+        zoom: 13,
       });
 
       watch(
@@ -180,11 +181,7 @@ export default {
           clearMarks();
           dataStore.rodovia = "Selecione";
           dataStore.defeito = "Selecione";
-          putMarker(
-            dataStore.rodovia,
-            dataStore.defeito,
-            map.value
-          );
+          putMarker(dataStore.rodovia, dataStore.defeito, map.value);
         }
       );
 
@@ -192,11 +189,7 @@ export default {
         () => dataStore.getRodovia,
         () => {
           clearMarks();
-          putMarker(
-            dataStore.rodovia,
-            dataStore.defeito,
-            map.value
-          );
+          putMarker(dataStore.rodovia, dataStore.defeito, map.value);
         }
       );
 
@@ -204,25 +197,19 @@ export default {
         () => dataStore.getDefeito,
         () => {
           clearMarks();
-          putMarker(
-            dataStore.rodovia,
-            dataStore.defeito,
-
-            map.value
-          );
+          putMarker(dataStore.rodovia, dataStore.defeito, map.value);
         }
       );
     }
 
     onMounted(async () => {
       await loader.load();
-      await fecthData(filters.value);
+      await fecthData({
+        rodovia: dataStore.dados.endereco,
+        defeito: dataStore.dados.defeito,
+      });
       iniMap();
-      putMarker(
-            dataStore.rodovia,
-            dataStore.defeito,
-            map.value,
-          )
+      putMarker(dataStore.dados.endereco, dataStore.dados.defeito, map.value);
     });
 
     return { mapDiv, clearMarks };

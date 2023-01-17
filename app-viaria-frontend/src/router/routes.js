@@ -7,11 +7,13 @@ const routes = [
         path: "",
         name: "home",
         component: () => import("pages/IndexPage.vue"),
+        props: true,
       },
       {
         path: "tabela",
         name: "Tabela de Defeitos",
         component: () => import("pages/TabelaDeDefeitos.vue"),
+        props: true,
       },
     ],
   },

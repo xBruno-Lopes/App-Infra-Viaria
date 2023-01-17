@@ -10,8 +10,26 @@
           aria-label="Menu"
           @click="drawer.ToolbarDrawerControl"
         />
-
-        <q-toolbar-title> App Infra Viária </q-toolbar-title>
+        <q-toolbar-title @click="$router.push('/')">
+          App Infra Viária
+        </q-toolbar-title>
+        <q-space></q-space>
+        <q-tabs shrink stretch>
+          <q-route-tab
+            name="mapa"
+            label="Mapa"
+            to="/"
+            exact
+            @click="drawer.markerDrawerControl"
+          />
+          <q-route-tab
+            name="tabelaDeDefeitos"
+            label="Tabela de Defeitos"
+            to="/tabela"
+            exact
+            @click="drawer.tabDrawerControl"
+          />
+        </q-tabs>
       </q-toolbar>
     </q-header>
 
