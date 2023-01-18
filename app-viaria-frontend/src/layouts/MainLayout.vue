@@ -105,6 +105,18 @@
               </q-banner>
             </div>
           </q-expansion-item>
+          <q-expansion-item
+            expand-separator
+            label="Periodo"
+            :header-inset-level="1"
+            :content-inset-level="1"
+            default-opened
+          >
+            <div class="row q-pa-md">
+              <span>Periodo: </span>
+              <q-date v-model="state.date"> </q-date>
+            </div>
+          </q-expansion-item>
         </q-expansion-item>
         <q-expansion-item
           expand-separator
@@ -138,6 +150,7 @@ export default defineComponent({
   setup() {
     const state = reactive({
       cidade: null,
+      date: null,
     });
     const estadosOptions = ["CE"];
 

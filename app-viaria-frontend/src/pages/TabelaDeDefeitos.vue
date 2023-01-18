@@ -75,7 +75,7 @@ const store = useComponentStore();
 export default defineComponent({
   setup() {
     const router = useRouter();
-    const defeitosOptions = ["crack", "patche", "pothole"];
+    const defeitosOptions = ["Rachadura", "Remendo", "Panela"];
     const defeito = ref(null);
     const qtdOptions = [10, 20, 30, 40, 50];
     const qtd = ref(null);

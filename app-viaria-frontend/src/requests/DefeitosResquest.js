@@ -11,21 +11,27 @@ export default {
     return Request.get(`${resource}/${id}?populate=imagem`);
   },
   findByClasse(classe) {
-    return Request.get(`${resource}?filters[classe][$eq]=${classe}`);
+    let defeito = classe;
+
+    if (defeito === "Rachadura") defeito = "crack";
+    else if (defeito === "Remendo") defeito = "patche";
+    else if (defeito === "Panela") defeito = "pothole";
+    return Request.get(`${resource}?filters[classe][$eq]=${defeito}`);
   },
 
-  findByCidadeAndRodovia(filters){
+  findByCidadeAndRodovia(filters) {
     let rodovia = filters.rodovia;
     let defeito = filters.defeito;
 
-    if(rodovia === "Selecione")
-      rodovia = ""
+    if (rodovia === "Selecione") rodovia = "";
 
     if (defeito === "Selecione") defeito = "";
     else if (defeito === "Rachadura") defeito = "crack";
     else if (defeito === "Remendo") defeito = "patche";
     else if (defeito === "Panela") defeito = "pothole";
 
-    return Request.get(`${resource}?filters[$and][1][endereco][$contains]=${rodovia}&}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`);
-  }
+    return Request.get(
+      `${resource}?filters[$and][1][endereco][$contains]=${rodovia}&}&filters[$and][2][classe][$contains]=${defeito}&populate=imagem`
+    );
+  },
 };

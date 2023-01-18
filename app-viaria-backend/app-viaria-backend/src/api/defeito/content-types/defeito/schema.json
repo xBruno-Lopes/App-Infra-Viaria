@@ -4,7 +4,7 @@
   "info": {
     "singularName": "defeito",
     "pluralName": "defeitos",
-    "displayName": "Defeito",
+    "displayName": "Defeitos",
     "description": ""
   },
   "options": {
@@ -12,37 +12,31 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "classe": {
+      "type": "string"
+    },
     "endereco": {
       "type": "string"
     },
     "latitude": {
-      "type": "decimal"
+      "type": "float"
     },
     "longitude": {
-      "type": "decimal"
-    },
-    "classe": {
-      "type": "enumeration",
-      "enum": [
-        "no_defect",
-        "pothole",
-        "crack",
-        "patche"
-      ]
+      "type": "float"
     },
     "dataDeColeta": {
-      "type": "datetime"
+      "type": "string"
     },
     "imagem": {
       "type": "media",
       "multiple": true,
       "required": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
+    },
+    "quantidade": {
+      "type": "integer"
     }
   }
 }

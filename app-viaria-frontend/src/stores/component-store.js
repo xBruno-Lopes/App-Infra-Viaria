@@ -46,7 +46,12 @@ export const useComponentStore = defineStore("main", {
           this.contentTable.add(
             JSON.stringify({
               endereco: elem.attributes.endereco,
-              defeitos: elem.attributes.classe,
+              defeitos:
+                elem.attributes.classe === "patche"
+                  ? "Remendo"
+                  : elem.attributes.classe === "crack"
+                  ? "Rachadura"
+                  : "Panela",
               quantidade: 25,
             })
           );
