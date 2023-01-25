@@ -15,6 +15,12 @@ const routes = [
         component: () => import("pages/TabelaDeDefeitos.vue"),
         props: true,
       },
+      {
+        path: "importarDados",
+        name: "Importar Dados",
+        component: () => import("pages/ImportarDadosPage.vue"),
+        props: true,
+      },
     ],
   },
 

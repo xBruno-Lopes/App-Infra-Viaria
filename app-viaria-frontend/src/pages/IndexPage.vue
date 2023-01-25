@@ -22,11 +22,6 @@ export default {
     const mapDiv = ref(null);
     let map = ref(null);
     let defeitos = ref(null);
-    // let filters = ref({
-    //   cidade: "Fortaleza, CE",
-    //   rodovia: "CE - 040",
-    //   defeito: "Rachadura",
-    // });
 
     let myWayPoints = [];
     let markers = [];
@@ -43,7 +38,7 @@ export default {
               long: e.attributes.longitude,
               classe: e.attributes.classe,
               date: e.attributes.dataDeColeta,
-              image: e.attributes.imagem.data[0].attributes.url,
+              image: e.attributes.imagem.data.attributes.url,
             };
           });
         });
@@ -71,7 +66,7 @@ export default {
       }
     }
 
-    async function putMarker(endereco, defeito, mapa) {
+    async function putMarker(endereco, defeito, dataInicial, dataFinal, mapa) {
       // map.value.setCenter(new google.maps.LatLng(center.lat, center.lng));
 
       var pinColorYellow = "#FFFF00";
@@ -119,7 +114,12 @@ export default {
         labelOrigin: labelOriginFilled,
       };
 
-      await fecthData({ rodovia: endereco, defeito: defeito });
+      await fecthData({
+        rodovia: endereco,
+        defeito: defeito,
+        periodoInicial: dataInicial,
+        periodoFinal: dataFinal,
+      });
       let index = Math.floor(myWayPoints.length / 2);
       let center;
       if (myWayPoints.length !== 0) {
@@ -127,6 +127,8 @@ export default {
 
         map.value.setCenter(new google.maps.LatLng(center));
         map.value.setZoom(13);
+      } else {
+        alert("Nenhum Resultado Encontrado!");
       }
 
       myWayPoints.forEach((element) => {
@@ -176,20 +178,16 @@ export default {
       });
 
       watch(
-        () => dataStore.getCidade,
-        () => {
-          clearMarks();
-          dataStore.rodovia = "Selecione";
-          dataStore.defeito = "Selecione";
-          putMarker(dataStore.rodovia, dataStore.defeito, map.value);
-        }
-      );
-
-      watch(
         () => dataStore.getRodovia,
         () => {
           clearMarks();
-          putMarker(dataStore.rodovia, dataStore.defeito, map.value);
+          putMarker(
+            dataStore.rodovia,
+            dataStore.defeito,
+            dataStore.periodoInicial,
+            dataStore.periodoFinal,
+            map.value
+          );
         }
       );
 
@@ -197,7 +195,39 @@ export default {
         () => dataStore.getDefeito,
         () => {
           clearMarks();
-          putMarker(dataStore.rodovia, dataStore.defeito, map.value);
+          putMarker(
+            dataStore.rodovia,
+            dataStore.defeito,
+            dataStore.periodoInicial,
+            dataStore.periodoFinal,
+            map.value
+          );
+        }
+      );
+      watch(
+        () => dataStore.getPeriodoInicial,
+        () => {
+          clearMarks();
+          putMarker(
+            dataStore.rodovia,
+            dataStore.defeito,
+            dataStore.periodoInicial,
+            dataStore.periodoFinal,
+            map.value
+          );
+        }
+      );
+      watch(
+        () => dataStore.getPeriodoFinal,
+        () => {
+          clearMarks();
+          putMarker(
+            dataStore.rodovia,
+            dataStore.defeito,
+            dataStore.periodoInicial,
+            dataStore.periodoFinal,
+            map.value
+          );
         }
       );
     }
@@ -207,9 +237,17 @@ export default {
       await fecthData({
         rodovia: dataStore.dados.endereco,
         defeito: dataStore.dados.defeito,
+        periodoInicial: dataStore.periodoInicial,
+        periodoFinal: dataStore.periodoFinal,
       });
       iniMap();
-      putMarker(dataStore.dados.endereco, dataStore.dados.defeito, map.value);
+      putMarker(
+        dataStore.dados.endereco,
+        dataStore.dados.defeito,
+        dataStore.periodoInicial,
+        dataStore.periodoFinal,
+        map.value
+      );
     });
 
     return { mapDiv, clearMarks };

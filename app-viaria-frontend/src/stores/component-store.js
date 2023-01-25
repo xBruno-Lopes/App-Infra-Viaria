@@ -16,7 +16,10 @@ export const useComponentStore = defineStore("main", {
     rodovia: "Selecione",
     nenhumFiltroSelecionado: false,
     contentTable: new Set(),
-    dados: { endereco: "CE - 025", defeito: "pothole" },
+    dados: { endereco: "CE10", defeito: "pothole" },
+    periodoInicial: "",
+    periodoFinal: "",
+    displayImage: "none",
   }),
   actions: {
     fecthMarkerData(classe, date, endereco, img, localizacao) {
@@ -47,7 +50,7 @@ export const useComponentStore = defineStore("main", {
             JSON.stringify({
               endereco: elem.attributes.endereco,
               defeitos:
-                elem.attributes.classe === "patche"
+                elem.attributes.classe === "patch"
                   ? "Remendo"
                   : elem.attributes.classe === "crack"
                   ? "Rachadura"
@@ -65,6 +68,12 @@ export const useComponentStore = defineStore("main", {
     },
     getDefeito(state) {
       return state.defeito;
+    },
+    getPeriodoInicial(state) {
+      return state.periodoInicial;
+    },
+    getPeriodoFinal(state) {
+      return state.periodoFinal;
     },
     getNenhumFiltro(state) {
       return state.nenhumFiltroSelecionado;

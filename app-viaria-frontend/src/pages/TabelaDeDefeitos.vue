@@ -14,19 +14,19 @@
         </q-select>
       </div>
       <div class="q-ml-lg">
-        <span>Quantidade mínima por KM: </span>
-        <q-select
+        <span>Quantidade: </span>
+        <q-input
           label="Selecione"
           class="selectSize q-mt-sm"
           dense
           outlined
           v-model="qtd"
-          :options="qtdOptions"
         >
-        </q-select>
+        </q-input>
       </div>
       <div class="q-pt-lg">
         <q-btn
+          no-caps
           class="q-mt-sm q-ml-lg"
           push
           color="primary"
@@ -97,7 +97,7 @@ export default defineComponent({
       },
       {
         name: "quantidade",
-        label: "Quantidade por KM",
+        label: "Quantidade",
         field: "quantidade",
         align: "center",
         sortable: true,
