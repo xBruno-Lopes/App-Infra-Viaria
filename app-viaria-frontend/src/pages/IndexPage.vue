@@ -252,8 +252,8 @@ export default {
             view = "marks"
             clearHeatMaps()
             putMarker(
-              dataStore.dados.endereco,
-              dataStore.dados.defeito,
+              dataStore.rodovia,
+              dataStore.defeito,
               dataStore.periodoInicial,
               dataStore.periodoFinal,
               map.value
