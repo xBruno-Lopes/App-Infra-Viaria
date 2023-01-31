@@ -10,6 +10,7 @@
           outlined
           v-model="defeito"
           :options="defeitosOptions"
+          multiple
         >
         </q-select>
       </div>

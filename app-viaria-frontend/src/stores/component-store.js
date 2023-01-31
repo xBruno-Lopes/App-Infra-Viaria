@@ -46,15 +46,11 @@ export const useComponentStore = defineStore("main", {
       this.contentTable.clear();
       defeitosRequest.findByClasse(classe).then((res) => {
         res.data.data.map((elem) => {
+          //let aux = attributes.classe.split(",");
           this.contentTable.add(
             JSON.stringify({
               endereco: elem.attributes.endereco,
-              defeitos:
-                elem.attributes.classe === "patch"
-                  ? "Remendo"
-                  : elem.attributes.classe === "crack"
-                  ? "Rachadura"
-                  : "Panela",
+              defeitos: elem.attributes.classe,
               quantidade: 25,
             })
           );
