@@ -22,7 +22,7 @@ export default {
     const mapDiv = ref(null);
     let map = ref(null);
     let defeitos = ref(null);
-    let view = "marks"
+    let view = "marks";
 
     let myWayPoints = [];
     let markers = [];
@@ -71,7 +71,6 @@ export default {
     }
 
     async function putMarker(endereco, defeito, dataInicial, dataFinal, mapa) {
-
       var pinColorYellow = "#FFFF00";
       var pinColorRed = "#FF0000";
       var pinColorOrange = "#FFA500";
@@ -127,9 +126,9 @@ export default {
       let center;
       if (myWayPoints.length !== 0) {
         center = myWayPoints[index].location;
-
+        console.log(center);
         map.value.setCenter(new google.maps.LatLng(center));
-        map.value.setZoom(13);
+        map.value.setZoom(16);
       } else {
         alert("Nenhum Resultado Encontrado!");
       }
@@ -171,63 +170,68 @@ export default {
       markers = [];
     }
 
-    function clearHeatMaps(){
+    function clearHeatMaps() {
       heatmaps.forEach((h) => {
-        h.setMap(null)
+        h.setMap(null);
       });
       heatmaps = [];
     }
 
-    function viewHeatMap(){
-  
-        clearMarks()
-        const gradient1 = [
-          "rgba(0, 255, 0, 0)",
-          "rgba(0, 255, 0, 1)",
-        ];
-        const gradient2 = [
-          "rgba(255, 255, 0, 0)",
-          "rgba(255, 255, 0, 1)",
-        ];
-        const gradient3 = [
-          "rgba(255, 0, 0, 0)",
-          "rgba(255, 0, 0, 1)",
-        ];
-      
-        let heatmap1 = new google.maps.visualization.HeatmapLayer({
-          data: myWayPoints.filter(e => e.quantidade <= 1).map(e =>
-          {return {location: new google.maps.LatLng(e.location.lat, e.location.lng), weight: 2} }
-          ),
-          map: map.value,
-          gradient: gradient1,
-          dissipating: true,
-          opacity: 1,
-          radius: 10
-        });
-        let heatmap2 = new google.maps.visualization.HeatmapLayer({
-          data: myWayPoints.filter(e => e.quantidade > 1 && e.quantidade <= 3).map(e =>
-            {return {location: new google.maps.LatLng(e.location.lat, e.location.lng), weight: 4} }
-          ),
-          map: map.value,
-          gradient: gradient2,
-          dissipating: true,
-          opacity: 1,
-          radius: 20
-        });
-        let heatmap3 = new google.maps.visualization.HeatmapLayer({
-          data: myWayPoints.filter(e => e.quantidade >= 4).map(e =>
-            {return {location: new google.maps.LatLng(e.location.lat, e.location.lng), weight: 6} }
-          ),
-          map: map.value,
-          gradient: gradient3,
-          dissipating: true,
-          opacity: 1,
-          radius: 10
-        });
+    function viewHeatMap() {
+      clearMarks();
+      const gradient1 = ["rgba(0, 255, 0, 0)", "rgba(0, 255, 0, 1)"];
+      const gradient2 = ["rgba(255, 255, 0, 0)", "rgba(255, 255, 0, 1)"];
+      const gradient3 = ["rgba(255, 0, 0, 0)", "rgba(255, 0, 0, 1)"];
 
-        heatmaps.push(heatmap1)
-        heatmaps.push(heatmap2)
-        heatmaps.push(heatmap3)
+      let heatmap1 = new google.maps.visualization.HeatmapLayer({
+        data: myWayPoints
+          .filter((e) => e.quantidade <= 1)
+          .map((e) => {
+            return {
+              location: new google.maps.LatLng(e.location.lat, e.location.lng),
+              weight: 2,
+            };
+          }),
+        map: map.value,
+        gradient: gradient1,
+        dissipating: true,
+        opacity: 1,
+        radius: 10,
+      });
+      let heatmap2 = new google.maps.visualization.HeatmapLayer({
+        data: myWayPoints
+          .filter((e) => e.quantidade > 1 && e.quantidade <= 3)
+          .map((e) => {
+            return {
+              location: new google.maps.LatLng(e.location.lat, e.location.lng),
+              weight: 4,
+            };
+          }),
+        map: map.value,
+        gradient: gradient2,
+        dissipating: true,
+        opacity: 1,
+        radius: 20,
+      });
+      let heatmap3 = new google.maps.visualization.HeatmapLayer({
+        data: myWayPoints
+          .filter((e) => e.quantidade >= 4)
+          .map((e) => {
+            return {
+              location: new google.maps.LatLng(e.location.lat, e.location.lng),
+              weight: 6,
+            };
+          }),
+        map: map.value,
+        gradient: gradient3,
+        dissipating: true,
+        opacity: 1,
+        radius: 10,
+      });
+
+      heatmaps.push(heatmap1);
+      heatmaps.push(heatmap2);
+      heatmaps.push(heatmap3);
     }
 
     function iniMap() {
@@ -236,31 +240,31 @@ export default {
           lat: -5.181303,
           lng: -39.581477,
         },
-        zoom: 13,
+        zoom: 16,
       });
 
-      map.value.addListener('zoom_changed', () => {
-        if(map.value.getZoom() < 11){
-          if(view === "marks"){
-            view = "heatmaps"
-            clearMarks()
-            viewHeatMap()
+      map.value.addListener("zoom_changed", () => {
+        if (map.value.getZoom() < 16) {
+          if (view === "marks") {
+            view = "heatmaps";
+            clearMarks();
+            viewHeatMap();
           }
         }
-        if(map.value.getZoom() >= 11){
-          if(view === "heatmaps"){
-            view = "marks"
-            clearHeatMaps()
+        if (map.value.getZoom() >= 17) {
+          if (view === "heatmaps") {
+            view = "marks";
+            clearHeatMaps();
             putMarker(
               dataStore.rodovia,
               dataStore.defeito,
               dataStore.periodoInicial,
               dataStore.periodoFinal,
               map.value
-            )
+            );
           }
         }
-      })
+      });
 
       watch(
         () => dataStore.getRodovia,
@@ -320,16 +324,15 @@ export default {
     onMounted(async () => {
       await loader.load();
       await fecthData({
-        rodovia: dataStore.dados.endereco,
-        defeito: dataStore.dados.defeito,
+        rodovia: dataStore.rodovia,
+        defeito: dataStore.defeito,
         periodoInicial: dataStore.periodoInicial,
         periodoFinal: dataStore.periodoFinal,
       });
       iniMap();
-      console.log(myWayPoints[0])
       putMarker(
-        dataStore.dados.endereco,
-        dataStore.dados.defeito,
+        dataStore.rodovia,
+        dataStore.defeito,
         dataStore.periodoInicial,
         dataStore.periodoFinal,
         map.value

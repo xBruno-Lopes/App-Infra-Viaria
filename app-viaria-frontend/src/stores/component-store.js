@@ -16,7 +16,6 @@ export const useComponentStore = defineStore("main", {
     rodovia: "CE10",
     nenhumFiltroSelecionado: false,
     contentTable: new Set(),
-    dados: { endereco: "CE10", defeito: "pothole" },
     periodoInicial: "",
     periodoFinal: "",
     displayImage: "none",
