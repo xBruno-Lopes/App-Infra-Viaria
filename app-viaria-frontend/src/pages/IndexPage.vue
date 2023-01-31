@@ -22,9 +22,11 @@ export default {
     const mapDiv = ref(null);
     let map = ref(null);
     let defeitos = ref(null);
+    let view = "marks"
 
     let myWayPoints = [];
     let markers = [];
+    let heatmaps = [];
 
     async function fecthData(filters) {
       if (filters.rodovia !== "Selecione" || filters.defeito !== "Selecione") {
@@ -37,13 +39,14 @@ export default {
               lat: e.attributes.latitude,
               long: e.attributes.longitude,
               classe: e.attributes.classe,
+              quantidade: e.attributes.quantidade,
               date: e.attributes.dataDeColeta,
               image: e.attributes.imagem.data.attributes.url,
             };
           });
         });
         myWayPoints = [];
-        await defeitos.value.map((element) => {
+        await defeitos.value.forEach((element) => {
           if (element.classe !== "no_defect") {
             myWayPoints.push({
               location: {
@@ -52,6 +55,7 @@ export default {
               },
               stopover: false,
               classe: element.classe,
+              quantidade: element.quantidade,
               endereco: element.endereco,
               dataDeColeta: element.date,
               image: element.image,
@@ -67,7 +71,6 @@ export default {
     }
 
     async function putMarker(endereco, defeito, dataInicial, dataFinal, mapa) {
-      // map.value.setCenter(new google.maps.LatLng(center.lat, center.lng));
 
       var pinColorYellow = "#FFFF00";
       var pinColorRed = "#FF0000";
@@ -168,6 +171,65 @@ export default {
       markers = [];
     }
 
+    function clearHeatMaps(){
+      heatmaps.forEach((h) => {
+        h.setMap(null)
+      });
+      heatmaps = [];
+    }
+
+    function viewHeatMap(){
+  
+        clearMarks()
+        const gradient1 = [
+          "rgba(0, 255, 0, 0)",
+          "rgba(0, 255, 0, 1)",
+        ];
+        const gradient2 = [
+          "rgba(255, 255, 0, 0)",
+          "rgba(255, 255, 0, 1)",
+        ];
+        const gradient3 = [
+          "rgba(255, 0, 0, 0)",
+          "rgba(255, 0, 0, 1)",
+        ];
+      
+        let heatmap1 = new google.maps.visualization.HeatmapLayer({
+          data: myWayPoints.filter(e => e.quantidade <= 1).map(e =>
+          {return {location: new google.maps.LatLng(e.location.lat, e.location.lng), weight: 2} }
+          ),
+          map: map.value,
+          gradient: gradient1,
+          dissipating: true,
+          opacity: 1,
+          radius: 10
+        });
+        let heatmap2 = new google.maps.visualization.HeatmapLayer({
+          data: myWayPoints.filter(e => e.quantidade > 1 && e.quantidade <= 3).map(e =>
+            {return {location: new google.maps.LatLng(e.location.lat, e.location.lng), weight: 4} }
+          ),
+          map: map.value,
+          gradient: gradient2,
+          dissipating: true,
+          opacity: 1,
+          radius: 20
+        });
+        let heatmap3 = new google.maps.visualization.HeatmapLayer({
+          data: myWayPoints.filter(e => e.quantidade >= 4).map(e =>
+            {return {location: new google.maps.LatLng(e.location.lat, e.location.lng), weight: 6} }
+          ),
+          map: map.value,
+          gradient: gradient3,
+          dissipating: true,
+          opacity: 1,
+          radius: 10
+        });
+
+        heatmaps.push(heatmap1)
+        heatmaps.push(heatmap2)
+        heatmaps.push(heatmap3)
+    }
+
     function iniMap() {
       map.value = new google.maps.Map(mapDiv.value, {
         center: {
@@ -176,6 +238,29 @@ export default {
         },
         zoom: 13,
       });
+
+      map.value.addListener('zoom_changed', () => {
+        if(map.value.getZoom() < 11){
+          if(view === "marks"){
+            view = "heatmaps"
+            clearMarks()
+            viewHeatMap()
+          }
+        }
+        if(map.value.getZoom() >= 11){
+          if(view === "heatmaps"){
+            view = "marks"
+            clearHeatMaps()
+            putMarker(
+              dataStore.rodovia,
+              dataStore.defeito,
+              dataStore.periodoInicial,
+              dataStore.periodoFinal,
+              map.value
+            )
+          }
+        }
+      })
 
       watch(
         () => dataStore.getRodovia,
@@ -241,6 +326,7 @@ export default {
         periodoFinal: dataStore.periodoFinal,
       });
       iniMap();
+      console.log(myWayPoints[0])
       putMarker(
         dataStore.dados.endereco,
         dataStore.dados.defeito,

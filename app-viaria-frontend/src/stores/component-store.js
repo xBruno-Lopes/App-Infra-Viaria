@@ -13,7 +13,7 @@ export const useComponentStore = defineStore("main", {
     markerLocalizacao: null,
     estado: "CE",
     defeito: "Selecione",
-    rodovia: "Selecione",
+    rodovia: "CE10",
     nenhumFiltroSelecionado: false,
     contentTable: new Set(),
     dados: { endereco: "CE10", defeito: "pothole" },
