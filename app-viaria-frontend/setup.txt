@@ -1,0 +1,2 @@
+1. docker build -t app-frontend .
+2. docker run --name app-frontend -p 8080:8080 app-frontend

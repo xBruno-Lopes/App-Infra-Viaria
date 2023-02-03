@@ -1,0 +1,7 @@
+1. docker build -t populateBD .
+2. docker run --name populateDB -v D:/Docker/TCE_Asfalto/data:/app/appdata populatedb
+
+OBS: "D:/Docker/TCE_Asfalto/data" é pasta onde o scrip orá buscar as imagens e CSV
+
+#Comando para ver qual o ip o conteiner esta rodando
+docker inspect "conteiner name" -f “{{json .NetworkSettings.Networks }}”
