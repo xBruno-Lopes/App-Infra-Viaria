@@ -288,17 +288,11 @@ export default defineComponent({
 
     const ceOptions = [
       "Selecione",
-      "CE - 10",
+      "CE - 010",
       "CE - 156",
       "CE - 422",
       "CE - 471",
     ];
-    const options = {
-      "Aquiraz, CE": ["Selecione", "CE - 025", "CE - 040"],
-      "Fortaleza, CE": ["Selecione", "CE - 025", "CE - 040", "CE - 060"],
-      "Graça, CE": ["Selecione", "CE - 321"],
-      "Ubajara, CE": ["Selecione", "CE - 317", "CE - 187"],
-    };
 
     function openPopUp() {
       document.querySelector(".popup-image").style.display = "block";
@@ -318,7 +312,6 @@ export default defineComponent({
       store,
       estadosOptions,
       defeitosOptions,
-      options,
       ceOptions,
       pt_br,
       strapiApi,

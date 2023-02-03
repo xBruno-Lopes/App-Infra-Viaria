@@ -1,0 +1,7 @@
+1. docker build -t app-backend .
+2. docker run --name app-backend -p 1337:1337 app-backend
+
+
+
+#Comando para ver qual o ip o conteiner esta rodando
+docker inspect app-backend -f “{{json .NetworkSettings.Networks }}”
