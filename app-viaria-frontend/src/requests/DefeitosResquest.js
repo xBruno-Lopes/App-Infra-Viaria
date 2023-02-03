@@ -11,12 +11,19 @@ export default {
     return Request.get(`${resource}/${id}?populate=imagem`);
   },
   findByClasse(classe) {
-    let defeito = classe;
+    console.log(classe);
+    let data = classe;
+    let defeitos = [];
 
-    if (defeito === "Rachadura") defeito = "crack";
-    else if (defeito === "Remendo") defeito = "patch";
-    else if (defeito === "Panela") defeito = "pothole";
-    return Request.get(`${resource}?filters[classe][$eq]=${defeito}`);
+    data.forEach((element) => {
+      if (element === "Rachadura") defeitos.push("crack");
+      else if (element === "Remendo") defeitos.push("patch");
+      else if (element === "Panela") defeitos.push("pothole");
+    });
+
+    return Request.get(
+      `${resource}?filters[classe][$contains]=${defeitos.toString()}`
+    );
   },
 
   findByCidadeAndRodovia(filters) {
