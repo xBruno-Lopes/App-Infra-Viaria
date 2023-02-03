@@ -4287,6 +4287,11 @@
   "resolved" "https://registry.npmjs.org/es6-object-assign/-/es6-object-assign-1.1.0.tgz"
   "version" "1.1.0"
 
+"esbuild-linux-64@0.15.8":
+  "integrity" "sha512-4HxrsN9eUzJXdVGMTYA5Xler82FuZUu21bXKN42zcLHHNKCAMPUzD62I+GwDhsdgUBAUj0tRXDdsQHgaP6v0HA=="
+  "resolved" "https://registry.npmjs.org/esbuild-linux-64/-/esbuild-linux-64-0.15.8.tgz"
+  "version" "0.15.8"
+
 "esbuild-loader@^2.19.0":
   "integrity" "sha512-dr+j8O4w5RvqZ7I4PPB4EIyVTd679EBQnMm+JBB7av+vu05Zpje2IpK5N3ld1VWa+WxrInIbNFAg093+E1aRsA=="
   "resolved" "https://registry.npmjs.org/esbuild-loader/-/esbuild-loader-2.20.0.tgz"
@@ -4298,11 +4303,6 @@
     "loader-utils" "^2.0.0"
     "tapable" "^2.2.0"
     "webpack-sources" "^2.2.0"
-
-"esbuild-windows-64@0.15.8":
-  "integrity" "sha512-ag9ptYrsizgsR+PQE8QKeMqnosLvAMonQREpLw4evA4FFgOBMLEat/dY/9txbpozTw9eEOYyD3a4cE9yTu20FA=="
-  "resolved" "https://registry.npmjs.org/esbuild-windows-64/-/esbuild-windows-64-0.15.8.tgz"
-  "version" "0.15.8"
 
 "esbuild@^0.15.6":
   "integrity" "sha512-Remsk2dmr1Ia65sU+QasE6svJbsHe62lzR+CnjpUvbZ+uSYo1SitiOWPRfZQkCu82YWZBBKXiD/j0i//XWMZ+Q=="

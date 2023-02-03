@@ -27,7 +27,7 @@ export default {
   },
 
   findByCidadeAndRodovia(filters) {
-    let rodovia = filters.rodovia.replace(/[\s -]/g, "");
+    let rodovia = filters.rodovia.replaceAll("\\s", "");
     let defeito = filters.defeito;
     let dataInicial = "";
     let dataFinal = "";
